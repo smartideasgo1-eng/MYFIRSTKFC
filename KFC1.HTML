@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFC</title>
+    <link rel="stylesheet" href="KFC1.css">
+</head>
+<body>
+
+<header class="top-header">
+  <div class="navbar">
+    <div class="left-items">
+      
+      <button class="menu-btn" onclick="toggleSideMenu()">☰</button>
+
+<div class="overlay" id="overlay" onclick="closeSideMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+
+  <div class="side-menu-header">
+    <button class="login-button">LOGIN</button>
+    <div class="theme-toggle">
+      <button class="theme-btn active">Day</button>
+      <button class="theme-btn">Night</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <a href="#"><span class="icon">📍</span> Store Locator</a>
+  <a href="#"><span class="icon">🔍</span> Track Order</a>
+  <a href="#"><span class="icon">📋</span> Explore Menu</a>
+
+  <hr>
+
+  <a href="#">About Us</a>
+  <a href="#">My Rewards</a>
+  <a href="#">Terms &amp; Conditions</a>
+  <a href="#">Privacy Policy</a>
+  <a href="#">Contact Us</a>
+  <a href="#">Mitao Bhook</a>
+  <a href="#">Mitao Bhook - Scholarship</a>
+
+</div>
+      <div class="logo">
+        <img src="kfclogo.png" alt="KFC Logo">
+      </div>
+      <button class="nav-btn active">
+        <div class="delivery-box">
+          <img src="delivery.png" alt="Delivery Icon">
+          <span>DELIVERY</span>
+        </div>
+      </button>
+      <button class="pickup-button">
+        <img class="pickup-icon" src="PICKUP KFC.png" alt="Pickup">
+        PICKUP
+      </button>
+      <button class="merch-button">
+        <img class="merch-icon" src="merch.png" alt="Merch">
+        MERCH
+      </button>
+    </div>
+    <div class="right-items">
+      <button class="login-button">LOGIN</button>
+      <button class="cart-button">
+        <span class="cart-number"></span>
+        <img src="kfc cup.png" alt="Cart" class="bucket-img">
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="slider">
+  <button class="arrow left" onclick="previousImage()">‹</button>
+  <div class="slides" id="slides">
+    <img src="kfcanimation1.jpg" alt="KFC banner 1">
+    <img src="kfcanimation2.jpg" alt="KFC banner 2">
+    <img src="kfcanimation3.jpg" alt="KFC banner 3">
+  </div>
+  <button class="arrow right" onclick="nextImage()">›</button>
+</div>
+
+<div class="order-box">
+  <button class="order-btn">REORDER</button>
+</div>
+
+<section class="explore-section">
+  <div class="explore-heading">
+    <h2>EXPLORE MENU</h2>
+    <a href="#">VIEW ALL</a>
+  </div>
+
+  <div class="explore-wrapper">
+
+    <button class="explore-arrow left-arrow" onclick="slideMenu(-1)">&#8249;</button>
+
+    <div class="explore-track-container">
+      <div class="explore-track" id="exploreTrack">
+
+        <div class="menu-shape">
+          <img class="food-img" src="fries.png" alt="Everyday Value">
+          <p>Everyday Value</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="fries2.png" alt="Classic Burger">
+          <p>Classic Burger</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="fries3.png" alt="Margherita">
+          <p>Margherita</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="fries4.png" alt="Sushi Set">
+          <p>Sushi Set</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="combos.png" alt="Combos">
+          <p>Combos</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="manyburger.png" alt="Burgers">
+          <p>Burgers</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="snacks and beverages.png" alt="Snacks">
+          <p>Snacks</p>
+        </div>
+
+        <div class="menu-shape">
+          <img class="food-img" src="sauce.png" alt="Sauces">
+          <p>Sauces</p>
+        </div>
+ <div class="menu-shape">
+          <img class="food-img" src="sauce.png" alt="Sauces">
+          <p>Sauces</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <button class="explore-arrow right-arrow" onclick="slideMenu(1)">&#8250;</button>
+
+  </div>
+  <div></div>
+</section>
+<section class="bestseller-section">
+  <h2 class="bestseller-title">BEST SELLERS</h2>
+
+  <div class="bestseller-wrapper">
+    <div class="bestseller-track" id="bestsellerTrack">
+
+      <div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="bestseller1.png" alt="Krunch Burger">
+        <div class="card-footer">
+          <h3>Krunch Burger</h3>
+          <span class="price">Rs<b>310</b></span>
+        </div>
+      </div>
+
+      <div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="bestseller3.png" alt="Mighty Zinger">
+        <div class="card-footer">
+          <h3>Mighty Zinger</h3>
+          <span class="price">Rs<b>770</b></span>
+        </div>
+      </div>
+
+      <div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="bestseller4.png" alt="Chicken & Chips">
+        <div class="card-footer">
+          <h3>Chicken &amp; Chips</h3>
+          <span class="price">Rs<b>650</b></span>
+        </div>
+      </div>
+
+      <div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="bestseller5.png" alt="Hot Wings Bucket">
+        <div class="card-footer">
+          <h3>Hot Wings Bucket</h3>
+          <span class="price">Rs<b>670</b></span>
+        </div>
+      </div>
+
+      <div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="b.png" alt="Krunch Combo">
+        <div class="card-footer">
+          <h3>Krunch Combo</h3>
+          <span class="price">Rs<b>590</b></span>
+        </div>
+      </div>
+<div class="bestseller-card">
+        <div class="rank-bars"><span></span><span></span><span></span></div>
+        <img src="krunchocombo123.png" alt="Krunch Combo">
+        <div class="card-footer">
+          <h3>Krunch Combo1</h3>
+          <span class="price">Rs<b>590</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bestseller-scrollbar" id="bestsellerScrollbar">
+  <div class="bestseller-scroll-thumb" id="scrollThumb"></div>
+</div>
+</section>
+<section class="top-deals-section">
+  <h2 class="section-title">TOP DEALS</h2>
+
+  <div class="deals-row">
+
+    <div class="deal-card">
+      <div class="rank-bars"><span></span><span></span><span></span></div>
+      <button class="heart-btn">♡</button>
+
+      <img class="deal-img" src="topdeals2.png" alt="Crispy Bucket">
+
+      <h3>Crispy Bucket</h3>
+      <p>Enjoy 9 pcs of our Signature Crispy Fried Chicken, hand-breaded in-house.</p>
+      <h4>Rs 2090</h4>
+
+      <button class="add-btn">+ ADD TO BUCKET</button>
+    </div>
+
+    <div class="deal-card">
+      <div class="rank-bars"><span></span><span></span><span></span></div>
+      <button class="heart-btn">♡</button>
+
+      <img class="deal-img" src="topdeals2.png" alt="Family Festival 3">
+
+      <h3>Family Festival 3</h3>
+      <p>An ultimate meal for the fam. Includes burgers, chicken, and drinks.</p>
+      <h4>Rs 2590</h4>
+
+      <button class="add-btn">+ ADD TO BUCKET</button>
+    </div>
+
+    <div class="deal-card">
+      <div class="rank-bars"><span></span><span></span><span></span></div>
+      <button class="heart-btn">♡</button>
+
+      <img class="deal-img" src="topdeals3.png" alt="Strips Chips N Dips">
+
+      <h3>Strips Chips N Dips</h3>
+      <p>4 boneless strips, regular fries, 2 dips and a drink.</p>
+      <h4>Rs 750</h4>
+
+      <button class="add-btn">+ ADD TO BUCKET</button>
+    </div>
+
+    <div class="deal-card">
+      <div class="rank-bars"><span></span><span></span><span></span></div>
+      <button class="heart-btn">♡</button>
+
+      <img class="deal-img" src="top446456.png" alt="Xtreme Duo Box">
+
+      <h3>Xtreme Duo Box</h3>
+      <p>The irresistible combo of burgers, chicken, fries and drinks.</p>
+      <h4>Rs 1560</h4>
+
+      <button class="add-btn">+ ADD TO BUCKET</button>
+    </div>
+
+  </div>
+</section>
+
+<main class="promo-wrap">
+    <section class="promo-grid">
+      <a class="promo-card image-card" href="#">
+        <img src="endpic1.jpg" alt="Pickup made easy">
+      </a>
+
+      <a class="promo-card image-card" href="#">
+        <img src="endpic2.jpg" alt="Value bucket">
+      </a>
+
+      <a class="promo-card image-card" href="#">
+        <img src="endpic3.png" alt="Download KFC app">
+      </a>
+
+      <article class="promo-card menu-card">
+        <img class="menu-card__banner" src="endpic4final.jpg" alt="Cravings have no limits">
+        <p>Adding 11 herbs and spices, Explore our menu and add items to your cart.</p>
+        <button type="button" id="exploreMenu">EXPLORE MENU</button>
+      </article>
+    </section>
+    </main>
+    <footer class="kfc-footer">
+
+  <!-- ROW 1: Logo + Social -->
+  <div class="footer-top">
+    <div class="footer-logo">KFC</div>
+    <div class="footer-social">
+      <a href="#" class="social-yt" aria-label="YouTube">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1C4.5 20.4 12 20.4 12 20.4s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+        </svg>
+      </a>
+      <a href="#" class="social-ig" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.3.4.6.2 1 .5 1.4.9s.7.8.9 1.4c.2.4.4 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.4 2.3-.2.6-.5 1-.9 1.4s-.8.7-1.4.9c-.4.2-1.1.4-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.3-.4-.6-.2-1-.5-1.4-.9s-.7-.8-.9-1.4c-.2-.4-.4-1.1-.4-2.3C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.4-2.3.2-.6.5-1 .9-1.4s.8-.7 1.4-.9c.4-.2 1.1-.4 2.3-.4C8.4 2.2 8.8 2.2 12 2.2zm0-2.2C8.7 0 8.3 0 7 .1 5.7.1 4.7.4 3.9.7 3 1.1 2.3 1.6 1.6 2.3.9 3 .4 3.7 0 4.6-.3 5.4-.1 6.4 0 7.7.1 9 0 9.4 0 12.7s0 3.7.1 5c.1 1.3.3 2.3.7 3.1.4.9.9 1.6 1.6 2.3.7.7 1.4 1.2 2.3 1.6.8.3 1.8.6 3.1.7C8.3 24 8.7 24 12 24s3.7 0 5-.1c1.3-.1 2.3-.3 3.1-.7.9-.4 1.6-.9 2.3-1.6.7-.7 1.2-1.4 1.6-2.3.3-.8.6-1.8.7-3.1.1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-1.3-.3-2.3-.7-3.1-.4-.9-.9-1.6-1.6-2.3C21.7 1.6 21 1.1 20.1.7 19.3.4 18.3.1 17 .1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.4a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0z"/>
+        </svg>
+      </a>
+      <a href="#" class="social-fb" aria-label="Facebook">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23 10.1 24v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8V24C19.6 23 24 18.1 24 12.1z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ROW 2: Links + Badges — badges INSIDE footer-middle -->
+  <div class="footer-middle">
+
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Terms &amp; Conditions</a>
+
+      <a href="#">Mitao Bhook</a>
+      <a href="#">Store Locator</a>
+      <span></span>
+
+      <a href="#">Mitao Bhook - Scholarship</a>
+      <a href="#">Track Order</a>
+      <span></span>
+
+      <a href="#">Privacy Policy</a>
+      <span></span>
+      <span></span>
+
+      <a href="#">Careers</a>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- ↓ BADGES NOW INSIDE footer-middle ↓ -->
+    <div class="footer-badges">
+      <a href="#">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+             alt="Download on the App Store" />
+      </a>
+      <a href="#">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+             alt="Get it on Google Play" />
+      </a>
+    </div>
+
+  </div>  <!-- ← footer-middle closes HERE -->
+
+  <!-- ROW 3: Copyright + Powered By -->
+  <div class="footer-bottom">
+    <p class="footer-copyright">2026 KFC. All rights reserved</p>
+    <div class="footer-powered">
+      <span class="powered-label">Powered by</span><br/>
+      <a href="#">SimpleX Technology Solutions</a>
+    </div>
+  </div>
+
+</footer>
+  
+
+  
+    
+<script src="KFC1.JS"></script>
+</body>
+</html>
