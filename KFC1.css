@@ -974,3 +974,443 @@ img {
 }
 
 .footer-powered a:hover { text-decoration: underline; }
+
+/* ================================================================
+   RESPONSIVE
+   Breakpoints: ≤1199px (small desktop/large tablet), ≤991px (tablet),
+   ≤767px (mobile), ≤480px (small mobile)
+   Modeled on the reference (kfcpakistan.com mobile view in the video):
+   hamburger + logo header, scrollable Delivery/Pickup/Merch row,
+   full-width stacked slider/promo, condensed footer.
+   ================================================================ */
+
+/* ---------- ≤1199px : tighten desktop spacing ---------- */
+@media (max-width: 1199px) {
+  .top-header {
+    padding: 0 40px;
+  }
+
+  .right-items {
+    margin-left: 60px;
+    gap: 16px;
+  }
+
+  .explore-heading,
+  .explore-wrapper,
+  .bestseller-section,
+  .top-deals-section,
+  .kfc-footer {
+    width: 92%;
+  }
+}
+
+/* ---------- ≤991px : tablet ---------- */
+@media (max-width: 991px) {
+  .top-header {
+    padding: 0 24px;
+    min-height: 90px;
+  }
+
+  .right-items {
+    margin-left: 0;
+    gap: 12px;
+  }
+
+  .delivery-box {
+    width: 150px;
+    height: 48px;
+  }
+
+  .pickup-button,
+  .merch-button {
+    width: 120px;
+    height: 48px;
+    font-size: 15px;
+  }
+
+  .slider,
+  .slides img {
+    height: 480px;
+  }
+
+  .menu-shape {
+    flex: 0 0 220px;
+    height: 210px;
+  }
+
+  .food-img {
+    width: 165px;
+    top: 22px;
+    left: 28px;
+  }
+
+  .deals-row {
+    flex-wrap: wrap;
+  }
+
+  .deal-card {
+    width: calc(50% - 12px);
+    height: auto;
+    min-height: 400px;
+    padding-bottom: 50px;
+    margin-bottom: 10px;
+  }
+
+  .promo-grid {
+    width: 92%;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- ≤767px : mobile (matches the video reference) ---------- */
+@media (max-width: 767px) {
+  /* HEADER: hamburger + logo on top row, order-type buttons + login/cart
+     wrap to a horizontally-scrollable second row, like the reference site */
+  .top-header {
+    padding: 12px 16px;
+    min-height: auto;
+    height: auto;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+
+  .left-items {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .menu-btn {
+    font-size: 26px;
+  }
+
+  .logo img {
+    width: 72px;
+    height: 38px;
+  }
+
+  .right-items {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    justify-content: flex-start;
+  }
+
+  .right-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .delivery-box,
+  .pickup-button,
+  .merch-button {
+    flex-shrink: 0;
+    width: auto;
+    min-width: 130px;
+    height: 46px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .delivery-box img,
+  .pickup-icon,
+  .merch-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .login-button {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .cart-button {
+    flex-shrink: 0;
+  }
+
+  .bucket-img {
+    width: 44px;
+    height: 50px;
+  }
+
+  /* SIDE MENU */
+  .side-menu {
+    width: 80%;
+    left: -85%;
+  }
+
+  /* SLIDER */
+  .slider,
+  .slides img {
+    height: 280px;
+  }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .arrow.left { left: 10px; }
+  .arrow.right { right: 10px; }
+
+  /* ORDER BUTTON */
+  .order-box {
+    padding: 24px 16px;
+  }
+
+  .order-btn {
+    width: 100%;
+    height: 50px;
+    font-size: 15px;
+  }
+
+  /* EXPLORE MENU */
+  .explore-section {
+    padding: 24px 0 40px;
+  }
+
+  .explore-heading h2 {
+    font-size: 22px;
+  }
+
+  .explore-heading a {
+    font-size: 14px;
+  }
+
+  .explore-wrapper {
+    width: 92%;
+    gap: 8px;
+  }
+
+  .explore-track {
+    gap: 30px;
+  }
+
+  .menu-shape {
+    flex: 0 0 170px;
+    height: 165px;
+  }
+
+  .food-img {
+    width: 125px;
+    top: 16px;
+    left: 22px;
+  }
+
+  .menu-shape p {
+    font-size: 14px;
+    bottom: 22px;
+  }
+
+  .explore-arrow {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
+  /* BEST SELLERS */
+  .bestseller-section {
+    width: 92%;
+    margin: 28px auto;
+  }
+
+  .bestseller-title {
+    font-size: 22px;
+  }
+
+  .bestseller-card {
+    flex: 0 0 230px;
+  }
+
+  .bestseller-card img {
+    height: 190px;
+  }
+
+  .card-footer h3 {
+    font-size: 16px;
+  }
+
+  .price {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .price b {
+    font-size: 15px;
+  }
+
+  /* TOP DEALS */
+  .top-deals-section {
+    width: 92%;
+    margin: 32px auto;
+  }
+
+  .section-title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .deals-row {
+    gap: 14px;
+  }
+
+  .deal-card {
+    width: 100%;
+    height: auto;
+    min-height: 340px;
+    padding-bottom: 48px;
+  }
+
+  .deal-img {
+    height: 190px;
+  }
+
+  .deal-card h3 {
+    font-size: 17px;
+  }
+
+  .deal-card p {
+    font-size: 14px;
+    height: auto;
+  }
+
+  /* POPUP */
+  .popup-box {
+    width: 90vw;
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .popup-box img {
+    height: 190px;
+  }
+
+  .popup-box h2 {
+    font-size: 20px;
+  }
+
+  /* PROMO GRID */
+  .promo-wrap {
+    padding: 36px 0;
+  }
+
+  .promo-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .menu-card {
+    padding: 22px 16px;
+    aspect-ratio: auto;
+  }
+
+  .menu-card p {
+    font-size: 15px;
+  }
+
+  /* FOOTER */
+  .kfc-footer {
+    width: 92%;
+    padding-top: 28px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .footer-middle {
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 12px;
+    width: 100%;
+  }
+
+  .footer-badges {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 14px 0;
+  }
+
+  .footer-powered {
+    text-align: center;
+  }
+}
+
+/* ---------- ≤480px : small mobile fine-tuning ---------- */
+@media (max-width: 480px) {
+  .logo img {
+    width: 60px;
+    height: 32px;
+  }
+
+  .delivery-box,
+  .pickup-button,
+  .merch-button {
+    min-width: 110px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .side-menu {
+    width: 88%;
+    left: -90%;
+  }
+
+  .slider,
+  .slides img {
+    height: 200px;
+  }
+
+  .menu-shape {
+    flex: 0 0 140px;
+    height: 135px;
+  }
+
+  .food-img {
+    width: 100px;
+    top: 12px;
+    left: 18px;
+  }
+
+  .bestseller-card {
+    flex: 0 0 190px;
+  }
+
+  .bestseller-card img {
+    height: 160px;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr;
+  }
+
+  .popup-box {
+    width: 94vw;
+    padding: 14px;
+  }
+}
