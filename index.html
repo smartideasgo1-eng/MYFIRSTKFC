@@ -20,6 +20,11 @@
 
   <div class="side-menu-header">
     <button class="login-button">LOGIN</button>
+    <div class="user-chip" id="userChipSide">
+      <div class="user-avatar" id="userAvatarSide">U</div>
+      <span id="userNameSide">User</span>
+      <button class="logout-link" onclick="logoutUser()">LOGOUT</button>
+    </div>
     <div class="theme-toggle">
       <button class="theme-btn active">Day</button>
       <button class="theme-btn">Night</button>
@@ -63,8 +68,13 @@
     </div>
     <div class="right-items">
       <button class="login-button">LOGIN</button>
-      <button class="cart-button">
-        <span class="cart-number"></span>
+      <div class="user-chip" id="userChipTop">
+        <div class="user-avatar" id="userAvatarTop">U</div>
+        <span id="userNameTop">User</span>
+        <button class="logout-link" onclick="logoutUser()">LOGOUT</button>
+      </div>
+      <button class="cart-button" id="cartButton">
+        <span class="cart-count-badge" id="cartCountBadge">0</span>
         <img src="kfc cup.png" alt="Cart" class="bucket-img">
       </button>
     </div>
@@ -163,6 +173,7 @@
           <h3>Krunch Burger</h3>
           <span class="price">Rs<b>310</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
 
       <div class="bestseller-card">
@@ -172,6 +183,7 @@
           <h3>Mighty Zinger</h3>
           <span class="price">Rs<b>770</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
 
       <div class="bestseller-card">
@@ -181,6 +193,7 @@
           <h3>Chicken &amp; Chips</h3>
           <span class="price">Rs<b>650</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
 
       <div class="bestseller-card">
@@ -190,6 +203,7 @@
           <h3>Hot Wings Bucket</h3>
           <span class="price">Rs<b>670</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
 
       <div class="bestseller-card">
@@ -199,6 +213,7 @@
           <h3>Krunch Combo</h3>
           <span class="price">Rs<b>590</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
 <div class="bestseller-card">
         <div class="rank-bars"><span></span><span></span><span></span></div>
@@ -207,6 +222,7 @@
           <h3>Krunch Combo1</h3>
           <span class="price">Rs<b>590</b></span>
         </div>
+        <button class="bs-add-btn">+ ADD TO BUCKET</button>
       </div>
     </div>
   </div>
@@ -371,8 +387,149 @@
 </footer>
   
 
-  
-    
+<!-- ============================================
+     LOGIN / REGISTER MODAL
+     ============================================ -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <button class="auth-close" id="authClose">&times;</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLoginBtn" data-tab="login">LOGIN</button>
+      <button class="auth-tab" id="tabRegisterBtn" data-tab="register">REGISTER</button>
+    </div>
+
+    <form class="auth-form" id="loginForm">
+      <label>Email</label>
+      <input type="email" id="loginEmail" required placeholder="you@example.com" autocomplete="email">
+      <label>Password</label>
+      <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+      <p class="auth-error" id="loginError"></p>
+      <button type="submit" class="auth-submit">LOG IN</button>
+      <p class="auth-hint">New here? Click REGISTER above to create an account.</p>
+    </form>
+
+    <form class="auth-form" id="registerForm" style="display:none;">
+      <label>Full Name</label>
+      <input type="text" id="regName" required placeholder="John Doe">
+      <label>Email</label>
+      <input type="email" id="regEmail" required placeholder="you@example.com" autocomplete="email">
+      <label>Phone</label>
+      <input type="tel" id="regPhone" required placeholder="03xxxxxxxxx">
+      <label>Password</label>
+      <input type="password" id="regPassword" required placeholder="Min 6 characters" autocomplete="new-password">
+      <p class="auth-error" id="registerError"></p>
+      <button type="submit" class="auth-submit">CREATE ACCOUNT</button>
+      <p class="auth-hint">This is a front-end demo — accounts are stored only in this browser.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================
+     CART DRAWER
+     ============================================ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-header">
+    <h2>YOUR BUCKET</h2>
+    <button class="cart-drawer-close" id="cartDrawerClose">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItemsList"></div>
+  <div class="cart-empty" id="cartEmptyMsg">Your bucket is empty. Add something delicious! 🍗</div>
+  <div class="cart-drawer-footer">
+    <div class="cart-subtotal-row">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">Rs 0</span>
+    </div>
+    <button class="checkout-btn" id="goToCheckoutBtn">PROCEED TO CHECKOUT</button>
+  </div>
+</aside>
+
+<!-- ============================================
+     CHECKOUT MODAL
+     ============================================ -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-box">
+    <button class="checkout-close" id="checkoutClose">&times;</button>
+
+    <div class="checkout-steps">
+      <div class="step active" id="stepIndicator1" data-step="1"><span>1</span>Delivery</div>
+      <div class="step" id="stepIndicator2" data-step="2"><span>2</span>Payment</div>
+      <div class="step" id="stepIndicator3" data-step="3"><span>3</span>Review</div>
+      <div class="step" id="stepIndicator4" data-step="4"><span>4</span>Done</div>
+    </div>
+
+    <!-- Step 1: Delivery -->
+    <div class="checkout-panel" id="panelDelivery">
+      <h3>Delivery Details</h3>
+      <label>Full Name</label>
+      <input type="text" id="chkName" placeholder="Your full name">
+      <label>Phone Number</label>
+      <input type="tel" id="chkPhone" placeholder="03xxxxxxxxx">
+      <label>Delivery Address</label>
+      <textarea id="chkAddress" rows="3" placeholder="House #, street, area"></textarea>
+      <label>City</label>
+      <input type="text" id="chkCity" placeholder="Karachi">
+      <p class="checkout-field-error" id="deliveryError"></p>
+      <div class="checkout-btn-row">
+        <button class="checkout-next" id="toPaymentBtn">CONTINUE TO PAYMENT</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div class="checkout-panel" id="panelPayment" style="display:none;">
+      <h3>Payment Method</h3>
+      <label class="pay-option"><input type="radio" name="payMethod" value="cod" checked> Cash on Delivery</label>
+      <label class="pay-option"><input type="radio" name="payMethod" value="card"> Credit / Debit Card</label>
+      <div class="card-fields" id="cardFields" style="display:none;">
+        <label>Card Number</label>
+        <input type="text" id="chkCardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+        <div class="card-row">
+          <div>
+            <label>Expiry</label>
+            <input type="text" id="chkCardExpiry" placeholder="MM/YY" maxlength="5">
+          </div>
+          <div>
+            <label>CVV</label>
+            <input type="text" id="chkCardCvv" placeholder="123" maxlength="3">
+          </div>
+        </div>
+      </div>
+      <p class="checkout-field-error" id="paymentError"></p>
+      <div class="checkout-btn-row">
+        <button class="checkout-back" data-back="1">BACK</button>
+        <button class="checkout-next" id="toReviewBtn">REVIEW ORDER</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Review -->
+    <div class="checkout-panel" id="panelReview" style="display:none;">
+      <h3>Review Your Order</h3>
+      <div id="reviewItems" class="review-items"></div>
+      <div class="review-row"><span>Subtotal</span><span id="reviewSubtotal">Rs 0</span></div>
+      <div class="review-row"><span>Delivery Fee</span><span id="reviewDelivery">Rs 150</span></div>
+      <div class="review-row total"><span>Total</span><span id="reviewTotal">Rs 0</span></div>
+      <div class="review-address" id="reviewAddress"></div>
+      <div class="checkout-btn-row">
+        <button class="checkout-back" data-back="2">BACK</button>
+        <button class="checkout-next" id="placeOrderBtn">PLACE ORDER</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Done -->
+    <div class="checkout-panel" id="panelDone" style="display:none;">
+      <div class="order-success">
+        <div class="success-icon">✓</div>
+        <h3>Order Placed!</h3>
+        <p>Your order <strong id="orderNumberDisplay"></strong> has been confirmed.</p>
+        <p>Estimated delivery: 35–45 minutes.</p>
+        <button class="checkout-next" id="closeCheckoutDone">DONE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastMsg"></div>
+
 <script src="KFC1.JS"></script>
 </body>
 </html>
