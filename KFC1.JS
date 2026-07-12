@@ -275,6 +275,19 @@ document.querySelectorAll('.footer-badges img').forEach(badge => {
 const KFC_USERS_KEY = "kfc_users";
 const KFC_SESSION_KEY = "kfc_current_user";
 const KFC_CART_KEY = "kfc_cart";
+const KFC_GUEST_KEY = "kfc_guest_name";
+
+function getGuestName() {
+  return sessionStorage.getItem(KFC_GUEST_KEY);
+}
+
+function setGuestName(name) {
+  if (name) {
+    sessionStorage.setItem(KFC_GUEST_KEY, name);
+  } else {
+    sessionStorage.removeItem(KFC_GUEST_KEY);
+  }
+}
 
 /* ---------- storage helpers ---------- */
 function getUsers() {
@@ -329,7 +342,6 @@ function saveCart(cart) {
   localStorage.setItem(KFC_CART_KEY, JSON.stringify(cart));
   renderCartBadge();
 }
-
 /* ---------- toast ---------- */
 let toastTimer = null;
 function showToast(message) {
@@ -339,14 +351,13 @@ function showToast(message) {
   toast.classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
-}
+}   
 
 /* ---------- price parsing helper ---------- */
 function parsePriceText(text) {
   const digits = (text || "").replace(/[^0-9]/g, "");
   return digits ? parseInt(digits, 10) : 0;
 }
-
 /* ============================================
    AUTH UI
    ============================================ */
@@ -369,24 +380,34 @@ function closeAuthModal() {
 function switchAuthTab(tab) {
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
+  const guestForm = document.getElementById("guestForm");
   const tabLoginBtn = document.getElementById("tabLoginBtn");
   const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+  const tabGuestBtn = document.getElementById("tabGuestBtn");
+
+  loginForm.style.display = "none";
+  registerForm.style.display = "none";
+  guestForm.style.display = "none";
+  tabLoginBtn.classList.remove("active");
+  tabRegisterBtn.classList.remove("active");
+  tabGuestBtn.classList.remove("active");
 
   if (tab === "register") {
-    loginForm.style.display = "none";
     registerForm.style.display = "flex";
-    tabLoginBtn.classList.remove("active");
     tabRegisterBtn.classList.add("active");
+  } else if (tab === "guest") {
+    guestForm.style.display = "flex";
+    tabGuestBtn.classList.add("active");
   } else {
     loginForm.style.display = "flex";
-    registerForm.style.display = "none";
     tabLoginBtn.classList.add("active");
-    tabRegisterBtn.classList.remove("active");
   }
 }
 
 function refreshUserUI() {
   const user = getCurrentUser();
+  const guestName = getGuestName();
+  const displayName = user ? user.name : guestName;
 
   const chips = [
     { chip: document.getElementById("userChipTop"), avatar: document.getElementById("userAvatarTop"), name: document.getElementById("userNameTop") },
@@ -394,16 +415,16 @@ function refreshUserUI() {
   ];
 
   document.querySelectorAll(".login-button").forEach(btn => {
-    btn.style.display = user ? "none" : "inline-block";
+    btn.style.display = displayName ? "none" : "inline-block";
   });
 
   chips.forEach(({ chip, avatar, name }) => {
     if (!chip) return;
-    if (user) {
+    if (displayName) {
       chip.classList.add("show");
-      const firstName = user.name.split(" ")[0];
-      name.innerText = firstName;
-      avatar.innerText = firstName.charAt(0).toUpperCase();
+      const firstName = displayName.split(" ")[0];
+      name.innerText = firstName + (user ? "" : " (Guest)");
+      if (avatar) avatar.innerText = firstName.charAt(0).toUpperCase();
     } else {
       chip.classList.remove("show");
     }
@@ -412,6 +433,7 @@ function refreshUserUI() {
 
 function logoutUser() {
   setCurrentUserEmail(null);
+  setGuestName(null);
   refreshUserUI();
   showToast("You've been logged out");
   closeSideMenu();
@@ -475,6 +497,29 @@ function handleRegisterSubmit(e) {
 
   if (window._resumeCheckoutAfterLogin) {
     window._resumeCheckoutAfterLogin = false;
+    openCheckoutModal();
+  }
+}
+
+function handleGuestSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById("guestName").value.trim();
+  const errorEl = document.getElementById("guestError");
+
+  if (!name) {
+    errorEl.innerText = "Please enter your name.";
+    return;
+  }
+
+  errorEl.innerText = "";
+  setGuestName(name);
+  closeAuthModal();
+  refreshUserUI();
+  showToast(`Welcome, ${name.split(" ")[0]}!`);
+
+  if (window._resumeCheckoutAfterLogin) {
+    window._resumeCheckoutAfterLogin = false;
+    isGuestCheckout = true;
     openCheckoutModal();
   }
 }
@@ -598,19 +643,22 @@ function closeCartDrawer() {
 const DELIVERY_FEE = 150;
 let checkoutStep = 1;
 let selectedPayMethod = "cod";
+let isGuestCheckout = false;
 
 function goToCheckoutFromCart() {
   if (getCart().length === 0) return;
 
   const user = getCurrentUser();
-  if (!user) {
+  const guest = getGuestName();
+
+  if (!user && !guest) {
     closeCartDrawer();
     window._resumeCheckoutAfterLogin = true;
     openAuthModal("login");
-    showToast("Please log in to check out");
     return;
   }
 
+  isGuestCheckout = !user;
   closeCartDrawer();
   openCheckoutModal();
 }
@@ -620,11 +668,23 @@ function openCheckoutModal() {
   if (!overlay) return;
 
   const user = getCurrentUser();
+  const guestName = getGuestName();
+
   if (user) {
     document.getElementById("chkName").value = user.name || "";
     document.getElementById("chkPhone").value = user.phone || "";
     document.getElementById("chkAddress").value = user.address || "";
     document.getElementById("chkCity").value = user.city || "Karachi";
+  } else {
+    document.getElementById("chkName").value = guestName || "";
+    document.getElementById("chkPhone").value = "";
+    document.getElementById("chkAddress").value = "";
+    document.getElementById("chkCity").value = "Karachi";
+  }
+
+  const phoneLabel = document.getElementById("chkPhone").previousElementSibling;
+  if (phoneLabel) {
+    phoneLabel.innerText = isGuestCheckout ? "Phone Number (optional)" : "Phone Number";
   }
 
   overlay.classList.add("show");
@@ -666,17 +726,29 @@ function validateDeliveryStep() {
   const city = document.getElementById("chkCity").value.trim();
   const errorEl = document.getElementById("deliveryError");
 
-  if (!name || !phone || !address || !city) {
+  if (!name || !address || !city) {
     errorEl.innerText = "Please fill in all delivery details.";
     return false;
   }
-  if (!/^[0-9+\-\s]{7,15}$/.test(phone)) {
+
+  if (!isGuestCheckout) {
+    if (!phone) {
+      errorEl.innerText = "Please fill in all delivery details.";
+      return false;
+    }
+    if (!/^[0-9+\-\s]{7,15}$/.test(phone)) {
+      errorEl.innerText = "Please enter a valid phone number.";
+      return false;
+    }
+  } else if (phone && !/^[0-9+\-\s]{7,15}$/.test(phone)) {
     errorEl.innerText = "Please enter a valid phone number.";
     return false;
   }
 
   errorEl.innerText = "";
-  updateCurrentUser({ name, phone, address, city });
+  if (!isGuestCheckout) {
+    updateCurrentUser({ name, phone, address, city });
+  }
   return true;
 }
 
@@ -734,9 +806,10 @@ function renderReviewStep() {
   const address = document.getElementById("chkAddress").value.trim();
   const city = document.getElementById("chkCity").value.trim();
   const payLabel = selectedPayMethod === "card" ? "Credit / Debit Card" : "Cash on Delivery";
+  const phoneLine = phone ? ` - ${phone}` : "";
 
   document.getElementById("reviewAddress").innerHTML = `
-    <strong>${name}</strong> - ${phone}<br>
+    <strong>${name}</strong>${phoneLine}<br>
     ${address}, ${city}<br>
     Payment: ${payLabel}
   `;
@@ -745,7 +818,7 @@ function renderReviewStep() {
 function placeOrder() {
   const user = getCurrentUser();
   const cart = getCart();
-  if (!user || cart.length === 0) return;
+  if (cart.length === 0) return;
 
   const orderNumber = "KFC" + Math.floor(100000 + Math.random() * 900000);
   const order = {
@@ -756,6 +829,7 @@ function placeOrder() {
     deliveryFee: DELIVERY_FEE,
     total: getCartSubtotal() + DELIVERY_FEE,
     paymentMethod: selectedPayMethod,
+    guest: !user,
     address: {
       name: document.getElementById("chkName").value.trim(),
       phone: document.getElementById("chkPhone").value.trim(),
@@ -764,106 +838,75 @@ function placeOrder() {
     }
   };
 
-  const orders = JSON.parse(localStorage.getItem("kfc_orders_" + user.email) || "[]");
+  const orderKey = user ? ("kfc_orders_" + user.email) : "kfc_orders_guest";
+  const orders = JSON.parse(localStorage.getItem(orderKey) || "[]");
   orders.push(order);
-  localStorage.setItem("kfc_orders_" + user.email, JSON.stringify(orders));
+  localStorage.setItem(orderKey, JSON.stringify(orders));
 
   saveCart([]);
   renderCartBadge();
   renderCartDrawer();
+  isGuestCheckout = false;
 
   document.getElementById("orderNumberDisplay").innerText = orderNumber;
   goToCheckoutStep(4);
 }
-
 /* ============================================
-   WIRE UP EVENTS ON LOAD
+   WIRE UP EVENTS (missing bindings)
    ============================================ */
 
-window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", function () {
+  // init
   refreshUserUI();
   renderCartBadge();
 
+  // --- Auth modal open/close ---
   document.querySelectorAll(".login-button").forEach(btn => {
     btn.addEventListener("click", () => openAuthModal("login"));
   });
+  document.getElementById("authClose").addEventListener("click", closeAuthModal);
+  document.getElementById("authOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "authOverlay") closeAuthModal();
+  });
 
-  const authClose = document.getElementById("authClose");
-  if (authClose) authClose.addEventListener("click", closeAuthModal);
-
-  const authOverlay = document.getElementById("authOverlay");
-  if (authOverlay) {
-    authOverlay.addEventListener("click", function (e) {
-      if (e.target === authOverlay) closeAuthModal();
-    });
-  }
-
+  // --- Auth tabs ---
   document.getElementById("tabLoginBtn").addEventListener("click", () => switchAuthTab("login"));
   document.getElementById("tabRegisterBtn").addEventListener("click", () => switchAuthTab("register"));
+  document.getElementById("tabGuestBtn").addEventListener("click", () => switchAuthTab("guest"));
 
+  // --- Auth form submits ---
   document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
   document.getElementById("registerForm").addEventListener("submit", handleRegisterSubmit);
+  document.getElementById("guestForm").addEventListener("submit", handleGuestSubmit);
 
-  const cartButton = document.getElementById("cartButton");
-  if (cartButton) cartButton.addEventListener("click", openCartDrawer);
+  // --- Cart drawer ---
+  document.getElementById("cartButton").addEventListener("click", openCartDrawer);
+  document.getElementById("cartDrawerClose").addEventListener("click", closeCartDrawer);
+  document.getElementById("cartOverlay").addEventListener("click", closeCartDrawer);
+  document.getElementById("goToCheckoutBtn").addEventListener("click", goToCheckoutFromCart);
 
-  const cartDrawerClose = document.getElementById("cartDrawerClose");
-  if (cartDrawerClose) cartDrawerClose.addEventListener("click", closeCartDrawer);
-
-  const cartOverlay = document.getElementById("cartOverlay");
-  if (cartOverlay) cartOverlay.addEventListener("click", closeCartDrawer);
-
-  document.querySelectorAll(".deal-card .add-btn").forEach(btn => {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      const card = btn.closest(".deal-card");
-      const name = card.querySelector("h3").innerText;
-      const priceText = card.querySelector("h4").innerText;
-      const img = card.querySelector(".deal-img").src;
-      addToCart({ name, price: parsePriceText(priceText), img });
-    });
+  // --- Checkout modal ---
+  document.getElementById("checkoutClose").addEventListener("click", closeCheckoutModal);
+  document.getElementById("checkoutOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "checkoutOverlay") closeCheckoutModal();
   });
 
-  document.querySelectorAll(".bestseller-card .bs-add-btn").forEach(btn => {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      const card = btn.closest(".bestseller-card");
-      const name = card.querySelector("h3").innerText;
-      const priceText = card.querySelector(".price").innerText;
-      const img = card.querySelector("img").src;
-      addToCart({ name, price: parsePriceText(priceText), img });
-    });
-  });
-
-  const goToCheckoutBtn = document.getElementById("goToCheckoutBtn");
-  if (goToCheckoutBtn) goToCheckoutBtn.addEventListener("click", goToCheckoutFromCart);
-
-  const checkoutClose = document.getElementById("checkoutClose");
-  if (checkoutClose) checkoutClose.addEventListener("click", closeCheckoutModal);
-
-  const checkoutOverlay = document.getElementById("checkoutOverlay");
-  if (checkoutOverlay) {
-    checkoutOverlay.addEventListener("click", function (e) {
-      if (e.target === checkoutOverlay) closeCheckoutModal();
-    });
-  }
-
-  document.getElementById("toPaymentBtn").addEventListener("click", function () {
+  document.getElementById("toPaymentBtn").addEventListener("click", () => {
     if (validateDeliveryStep()) goToCheckoutStep(2);
   });
-
-  document.getElementById("toReviewBtn").addEventListener("click", function () {
+  document.getElementById("toReviewBtn").addEventListener("click", () => {
     if (validatePaymentStep()) goToCheckoutStep(3);
   });
-
   document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
+  document.getElementById("closeCheckoutDone").addEventListener("click", closeCheckoutModal);
 
   document.querySelectorAll(".checkout-back").forEach(btn => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", () => {
       goToCheckoutStep(parseInt(btn.getAttribute("data-back"), 10));
     });
   });
 
+  // --- Payment method toggle (show/hide card fields) ---
   document.querySelectorAll('input[name="payMethod"]').forEach(radio => {
     radio.addEventListener("change", function () {
       document.getElementById("cardFields").style.display =
@@ -871,29 +914,29 @@ window.addEventListener("load", function () {
     });
   });
 
-  document.getElementById("closeCheckoutDone").addEventListener("click", function () {
-    closeCheckoutModal();
-    goToCheckoutStep(1);
-    document.getElementById("loginForm").reset();
+  // --- Add to cart: Best Sellers ---
+  document.querySelectorAll(".bestseller-card").forEach(card => {
+  card.addEventListener("click", function (e) {
+    // if the click came from the add button, do nothing here —
+    // that button already handles itself and stops propagation
+    if (e.target.closest(".bs-add-btn")) return;
+
+    const name = card.querySelector("h3").innerText;
+    showToast(`${name} tapped`);
+    card.classList.add("card-clicked");
+    setTimeout(() => card.classList.remove("card-clicked"), 300);
   });
+});
 
-  const cardNumberInput = document.getElementById("chkCardNumber");
-  if (cardNumberInput) {
-    cardNumberInput.addEventListener("input", function () {
-      let digits = this.value.replace(/\D/g, "").slice(0, 16);
-      this.value = digits.replace(/(.{4})/g, "$1 ").trim();
+  // --- Add to cart: Top Deals ---
+  document.querySelectorAll(".deal-card").forEach(card => {
+    const btn = card.querySelector(".add-btn");
+    btn.addEventListener("click", () => {
+      addToCart({
+        name: card.querySelector("h3").innerText,
+        price: parsePriceText(card.querySelector("h4").innerText),
+        img: card.querySelector("img").src
+      });
     });
-  }
-
-  const cardExpiryInput = document.getElementById("chkCardExpiry");
-  if (cardExpiryInput) {
-    cardExpiryInput.addEventListener("input", function () {
-      let digits = this.value.replace(/\D/g, "").slice(0, 4);
-      if (digits.length >= 3) {
-        this.value = digits.slice(0, 2) + "/" + digits.slice(2);
-      } else {
-        this.value = digits;
-      }
-    });
-  }
+  });
 });

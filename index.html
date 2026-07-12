@@ -387,8 +387,9 @@
 </footer>
   
 
+
 <!-- ============================================
-     LOGIN / REGISTER MODAL
+     LOGIN / REGISTER / GUEST MODAL
      ============================================ -->
 <div class="auth-overlay" id="authOverlay">
   <div class="auth-box">
@@ -396,6 +397,7 @@
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabLoginBtn" data-tab="login">LOGIN</button>
       <button class="auth-tab" id="tabRegisterBtn" data-tab="register">REGISTER</button>
+      <button class="auth-tab" id="tabGuestBtn" data-tab="guest">GUEST</button>
     </div>
 
     <form class="auth-form" id="loginForm">
@@ -421,8 +423,17 @@
       <button type="submit" class="auth-submit">CREATE ACCOUNT</button>
       <p class="auth-hint">This is a front-end demo — accounts are stored only in this browser.</p>
     </form>
+
+    <form class="auth-form" id="guestForm" style="display:none;">
+      <label>Your Name</label>
+      <input type="text" id="guestName" required placeholder="John Doe">
+      <p class="auth-error" id="guestError"></p>
+      <button type="submit" class="auth-submit">CONTINUE AS GUEST</button>
+      <p class="auth-hint">No email or phone needed — you'll just enter your delivery address at checkout.</p>
+    </form>
   </div>
 </div>
+
 
 <!-- ============================================
      CART DRAWER

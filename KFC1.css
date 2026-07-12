@@ -36,6 +36,7 @@ img {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+
 .navbar {
   width: 100%;
   display: flex;
@@ -1433,32 +1434,50 @@ img {
   display: none;
   align-items: center;
   gap: 10px;
+  margin-left: 40px;   /* ⬅ increased from 18px — pushes it much further away */
 }
 .user-chip.show { display: flex; }
 
 .user-chip .user-avatar {
-  display: none;   /* hides the little circle avatar so it's just plain text */
+  display: none;
 }
 
-.user-chip span {
+  .user-chip span {
   color: #e4002b;
   font-weight: 900;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  animation: floatUpDown 1.8s ease-in-out infinite;
 }
+
 
 .user-chip .logout-link {
-  color: #e4002b;
-  font-size: 12px;
-  font-weight: 900;
-  cursor: pointer;
-  text-decoration: underline;
-  background: none;
+  background-color: #e4002b;
+  color: white;
   border: none;
+  padding: 8px 12px;      /* ⬅ reduced from 10px 22px — makes it narrower */
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 13px;         /* ⬅ slightly smaller text helps it look proportional */
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.22);
+  text-decoration: none;
+}
+
+.user-chip .logout-link:hover {
+  background-color: #c90025;
+}
+
+@keyframes floatUpDown {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
 }
 
 .side-menu-header .user-chip {
   width: auto;
   justify-content: flex-start;
+  margin-left: 24px;
 }
 
 /* ================================================================
@@ -2078,4 +2097,12 @@ img {
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+.bestseller-card {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.bestseller-card.card-clicked {
+  transform: scale(0.97);
 }
